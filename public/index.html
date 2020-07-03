@@ -1,0 +1,758 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+        <link rel="stylesheet" href="/build/tailwind.css">
+        <title>Welcome to Ink!</title>
+    </head>
+    <body class="antialiased">
+        <div class="relative">
+            <div class="w-screen h-screen mx-auto">
+                <div class="h-full grid grid-cols-6">
+                    <div class="col-span-1">
+                        <div class="flex flex-col  h-full p-3">
+
+                            <div class="flex flex-row items-center mb-6">
+                                <button aria-haspopup="true" class="text-gray-700 rounded-full focus:outline-none hover:text-gray-600 hover:bg-gray-200 pr-2">
+                                    <svg class="w-6 h-6 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                        <path fill-rule="nonzero" d="M4,16 L20,16 C20.5522847,16 21,16.4477153 21,17 C21,17.5128358 20.6139598,17.9355072 20.1166211,17.9932723 L20,18 L4,18 C3.44771525,18 3,17.5522847 3,17 C3,16.4871642 3.38604019,16.0644928 3.88337887,16.0067277 L4,16 L20,16 L4,16 Z M4,11 L20,11 C20.5522847,11 21,11.4477153 21,12 C21,12.5128358 20.6139598,12.9355072 20.1166211,12.9932723 L20,13 L4,13 C3.44771525,13 3,12.5522847 3,12 C3,11.4871642 3.38604019,11.0644928 3.88337887,11.0067277 L4,11 Z M4,6 L20,6 C20.5522847,6 21,6.44771525 21,7 C21,7.51283584 20.6139598,7.93550716 20.1166211,7.99327227 L20,8 L4,8 C3.44771525,8 3,7.55228475 3,7 C3,6.48716416 3.38604019,6.06449284 3.88337887,6.00672773 L4,6 Z"/>
+                                    </svg>
+                                </button>
+
+                                <h2 class="text-lg font-bold">Hydra</h2>
+                            </div>
+
+                            <!--
+                                Custom select controls like this require a considerable amount of JS to implement from scratch. We're planning
+                                to build some low-level libraries to make this easier with popular frameworks like React, Vue, and even Alpine.js
+                                in the near future, but in the mean time we recommend these reference guides when building your implementation:
+
+                                https://www.w3.org/TR/wai-aria-practices/#Listbox
+                                https://www.w3.org/TR/wai-aria-practices/examples/listbox/listbox-collapsible.html
+                            -->
+                            <div class="space-y-1">
+                                <label id="listbox-label" class="block text-sm leading-5 font-medium text-gray-700">
+
+                                    <div class="flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" class="fill-current"><path class="heroicon-ui" d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2zm0 10v6h14v-6h-2.38l-1.45 2.9a2 2 0 0 1-1.79 1.1h-2.76a2 2 0 0 1-1.8-1.1L7.39 13H5zm14-2V5H5v6h2.38a2 2 0 0 1 1.8 1.1l1.44 2.9h2.76l1.45-2.9a2 2 0 0 1 1.79-1.1H19z"/></svg>
+                                        <span class="ml-1">
+                                            Bucket
+                                        </span>
+                                    </div>
+                                </label>
+                                <div class="relative">
+                                    <span class="inline-block w-full rounded-md shadow-sm">
+                                        <button type="button" aria-haspopup="listbox" aria-expanded="true" aria-labelledby="listbox-label" class="cursor-default relative w-full rounded-md border border-gray-300 bg-white pl-3 pr-10 py-2 text-left focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition ease-in-out duration-150 sm:text-sm sm:leading-5">
+                                            <div class="flex items-center space-x-3">
+                                                <span class="block truncate">
+
+                                                    Team B
+                                                </span>
+                                            </div>
+                                            <span class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                                <svg class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="none" stroke="currentColor">
+                                                    <path d="M7 7l3-3 3 3m0 6l-3 3-3-3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                </svg>
+                                            </span>
+                                        </button>
+                                    </span>
+
+                                    <!-- Select popover, show/hide based on select state. -->
+                                    <div class="absolute mt-1 w-full rounded-md bg-white shadow-lg">
+                                        <ul tabindex="-1" role="listbox" aria-labelledby="listbox-label" aria-activedescendant="listbox-item-3" class="max-h-56 rounded-md py-1 text-base leading-6 shadow-xs overflow-auto focus:outline-none sm:text-sm sm:leading-5">
+
+                                            <!--
+                                                Select option, manage highlight styles based on mouseenter/mouseleave and keyboard navigation.
+
+                                                Highlighted: "text-white bg-indigo-600", Not Highlighted: "text-gray-900"
+                                            -->
+                                            <li id="listbox-item-0" role="option" class="text-gray-900 cursor-default select-none relative py-2 pl-3 pr-9">
+                                                <div class="flex items-center space-x-3">
+                                                    <!-- Selected: "font-semibold", Not Selected: "font-normal" -->
+                                                    <span class="font-normal block truncate">
+
+                                                        Team B
+                                                    </span>
+                                                </div>
+
+                                                <!--
+                                                    Checkmark, only display for selected option.
+
+                                                    Highlighted: "text-white", Not Highlighted: "text-indigo-600"
+                                                -->
+                                                <span class="absolute inset-y-0 right-0 flex items-center pr-4">
+                                                    <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                                    </svg>
+                                                </span>
+                                            </li>
+                                            <li id="listbox-item-0" role="option" class="text-gray-900 cursor-default select-none relative py-2 pl-3 pr-9">
+                                                <div class="flex items-center space-x-3">
+                                                    <!-- Selected: "font-semibold", Not Selected: "font-normal" -->
+                                                    <span class="font-normal block truncate">
+                                                        Team D
+                                                    </span>
+                                                </div>
+
+                                                <!--
+                                                    Checkmark, only display for selected option.
+
+                                                    Highlighted: "text-white", Not Highlighted: "text-indigo-600"
+                                                -->
+                                            </li>
+
+
+                                            <!-- More options... -->
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="space-y-1 mt-24">
+                                <label id="listbox-label" class="block text-sm leading-5 font-medium text-gray-700">
+
+                                    <div class="flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path class="heroicon-ui" d="M2.59 13.41A1.98 1.98 0 0 1 2 12V7a5 5 0 0 1 5-5h4.99c.53 0 1.04.2 1.42.59l8 8a2 2 0 0 1 0 2.82l-8 8a2 2 0 0 1-2.82 0l-8-8zM20 12l-8-8H7a3 3 0 0 0-3 3v5l8 8 8-8zM7 8a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/></svg>
+                                        <span class="ml-1">
+                                            Tags
+                                        </span>
+                                    </div>
+                                </label>
+                                <div class="relative">
+                                    <span class="inline-block w-full rounded-md shadow-sm">
+                                        <button type="button" aria-haspopup="listbox" aria-expanded="true" aria-labelledby="listbox-label" class="cursor-default relative w-full rounded-md border border-gray-300 bg-white pl-3 pr-10 py-2 text-left focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition ease-in-out duration-150 sm:text-sm sm:leading-5">
+                                            <div class="flex items-center space-x-3">
+                                                <span class="block truncate">
+                                                    Select
+                                                </span>
+                                            </div>
+                                            <span class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                                <svg class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="none" stroke="currentColor">
+                                                    <path d="M7 7l3-3 3 3m0 6l-3 3-3-3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                </svg>
+                                            </span>
+                                        </button>
+                                    </span>
+
+                                    <!-- Select popover, show/hide based on select state. -->
+                                    <div class="absolute mt-1 w-full rounded-md bg-white shadow-lg">
+                                        <ul tabindex="-1" role="listbox" aria-labelledby="listbox-label" aria-activedescendant="listbox-item-3" class="max-h-56 rounded-md py-1 text-base leading-6 shadow-xs overflow-auto focus:outline-none sm:text-sm sm:leading-5">
+
+                                            <!--
+                                                Select option, manage highlight styles based on mouseenter/mouseleave and keyboard navigation.
+
+                                                Highlighted: "text-white bg-indigo-600", Not Highlighted: "text-gray-900"
+                                            -->
+                                            <li id="listbox-item-0" role="option" class="text-gray-900 cursor-default select-none relative py-2 pl-3 pr-9">
+                                                <div class="flex items-center space-x-3">
+                                                    <!-- Selected: "font-semibold", Not Selected: "font-normal" -->
+                                                    <span class="font-normal block truncate">
+                                                        Onboarding
+                                                    </span>
+                                                </div>
+
+                                                <!--
+                                                    Checkmark, only display for selected option.
+
+                                                    Highlighted: "text-white", Not Highlighted: "text-indigo-600"
+                                                -->
+                                            </li>
+                                            <li id="listbox-item-0" role="option" class="text-gray-900 cursor-default select-none relative py-2 pl-3 pr-9">
+                                                <div class="flex items-center space-x-3">
+                                                    <!-- Selected: "font-semibold", Not Selected: "font-normal" -->
+                                                    <span class="font-normal block truncate">
+                                                        Complaints
+                                                    </span>
+                                                </div>
+
+                                                <!--
+                                                    Checkmark, only display for selected option.
+
+                                                    Highlighted: "text-white", Not Highlighted: "text-indigo-600"
+                                                -->
+                                            </li>
+
+
+                                            <!-- More options... -->
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="bg-blue-100 col-span-2">
+                        <div class="relative flex flex-col hidden h-full bg-white border-r border-gray-300 shadow-md md:block transform transition-all duration-500 ease-in-out">
+                            <div class="flex flex-row items-center px-5 pt-3">
+
+                                <div class="flex flex-row items-center bg-orange-200 rounded-md p-2">
+                                    <div class="mr-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="fill-current"><path class="heroicon-ui" d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2zm0 10v6h14v-6h-2.38l-1.45 2.9a2 2 0 0 1-1.79 1.1h-2.76a2 2 0 0 1-1.8-1.1L7.39 13H5zm14-2V5H5v6h2.38a2 2 0 0 1 1.8 1.1l1.44 2.9h2.76l1.45-2.9a2 2 0 0 1 1.79-1.1H19z"/></svg>
+                                    </div>
+                                    <h2 class="font-bold">Team B</h2>
+                                </div>
+
+                                <div class="flex flex-row items-center bg-orange-200 rounded-md p-2 ml-2">
+                                    <div class="">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path class="heroicon-ui" d="M2.59 13.41A1.98 1.98 0 0 1 2 12V7a5 5 0 0 1 5-5h4.99c.53 0 1.04.2 1.42.59l8 8a2 2 0 0 1 0 2.82l-8 8a2 2 0 0 1-2.82 0l-8-8zM20 12l-8-8H7a3 3 0 0 0-3 3v5l8 8 8-8zM7 8a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/></svg>
+                                    </div>
+                                    <h2 class="ml-1 font-bold">
+                                        Onboarding
+                                    </h2>
+                                </div>
+                            </div>
+                            <div class="flex justify-between px-3 pt-1 text-white">
+                                <div class="flex items-center w-full py-2">
+
+                                    <div class="relative flex items-center w-full pl-2 overflow-hidden text-gray-600 focus-within:text-gray-400">
+                                        <span class="absolute inset-y-0 left-0 flex items-center pl-4">
+                                            <button type="submit" class="p-1 focus:outline-none focus:shadow-none">
+                                                <svg class="w-6 h-6 fill-current" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                                    <path fill-rule="nonzero" d="M9.5,3 C13.0898509,3 16,5.91014913 16,9.5 C16,10.9337106 15.5358211,12.2590065 14.7495478,13.3338028 L19.7071068,18.2928932 C20.0976311,18.6834175 20.0976311,19.3165825 19.7071068,19.7071068 C19.3466228,20.0675907 18.7793918,20.0953203 18.3871006,19.7902954 L18.2928932,19.7071068 L13.3338028,14.7495478 C12.2590065,15.5358211 10.9337106,16 9.5,16 C5.91014913,16 3,13.0898509 3,9.5 C3,5.91014913 5.91014913,3 9.5,3 Z M9.5,5 C7.01471863,5 5,7.01471863 5,9.5 C5,11.9852814 7.01471863,14 9.5,14 C11.9852814,14 14,11.9852814 14,9.5 C14,7.01471863 11.9852814,5 9.5,5 Z"/>
+                                                </svg>
+                                            </button>
+                                        </span>
+                                        <input type="search" name="q"
+                                                             class="w-full py-2 pl-12 text-sm text-white bg-gray-200 border border-transparent appearance-none rounded-tg focus:bg-white focus:outline-none focus:border-blue-500 focus:text-gray-900 focus:shadow-outline-blue" style="border-radius: 25px"
+                                                             placeholder="Search..." autocomplete="off">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pb-2 border-b shadow-bot">
+                                <ul class="flex flex-row items-center inline-block px-2 list-none select-none">
+                                    <li class="px-1 mx-1 -mb-px text-center rounded-t-lg cursor-pointer">
+                                        <div class="relative inline-block text-left" data-dropdown>
+                                            <div data-dropdown-button>
+                                                <span class="rounded-md shadow-sm">
+                                                    <button type="button" class="inline-flex justify-center w-full px-4 py-2 text-xs font-bold text-gray-700 bg-white border border-gray-300 rounded-md leading-5 hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800 transition ease-in-out duration-150" id="options-menu" aria-haspopup="true" aria-expanded="true">
+                                                        Tags
+                                                        <svg class="w-5 h-5 ml-2 -mr-1" viewBox="0 0 20 20" fill="currentColor">
+                                                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                                        </svg>
+                                                    </button>
+                                                </span>
+                                            </div>
+
+                                            <!--
+                                                Dropdown panel, show/hide based on dropdown state.
+
+                                                Entering: "transition ease-out duration-100"
+                                                From: "transform opacity-0 scale-95"
+                                                To: "transform opacity-100 scale-100"
+                                                Leaving: "transition ease-in duration-75"
+                                                From: "transform opacity-100 scale-100"
+                                                To: "transform opacity-0 scale-95"
+                                            -->
+                                            <div class="absolute left-0 hidden w-56 mt-2 shadow-lg origin-top-right rounded-md" data-dropdown-list>
+                                                <div class="bg-white rounded-md shadow-xs">
+                                                    <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 leading-5 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900" role="menuitem">Completed
+                                                        </a>
+                                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 leading-5 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900" role="menuitem">Snoozed
+                                                        </a>
+                                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 leading-5 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900" role="menuitem">Priority
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="px-1 mx-1 -mb-px text-center rounded-t-lg cursor-pointer last:mr-0 hover:bg-gray-200">
+                                        <div class="relative inline-block text-left" data-dropdown>
+                                            <div data-dropdown-button>
+                                                <span class="rounded-md shadow-sm">
+                                                    <button type="button" class="inline-flex justify-center w-full px-4 py-2 text-xs font-bold text-gray-700 bg-white border border-gray-300 rounded-md leading-5 hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800 transition ease-in-out duration-150" id="options-menu" aria-haspopup="true" aria-expanded="true">
+                                                        Completed
+                                                        <svg class="w-5 h-5 ml-2 -mr-1" viewBox="0 0 20 20" fill="currentColor">
+                                                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                                        </svg>
+                                                    </button>
+                                                </span>
+                                            </div>
+
+                                            <!--
+                                                Dropdown panel, show/hide based on dropdown state.
+
+                                                Entering: "transition ease-out duration-100"
+                                                From: "transform opacity-0 scale-95"
+                                                To: "transform opacity-100 scale-100"
+                                                Leaving: "transition ease-in duration-75"
+                                                From: "transform opacity-100 scale-100"
+                                                To: "transform opacity-0 scale-95"
+                                            -->
+                                            <div class="absolute left-0 hidden w-56 mt-2 shadow-lg origin-top-right rounded-md" data-dropdown-list>
+                                                <div class="bg-white rounded-md shadow-xs">
+                                                    <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 leading-5 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900" role="menuitem">Completed
+                                                        </a>
+                                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 leading-5 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900" role="menuitem">Snoozed
+                                                        </a>
+                                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 leading-5 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900" role="menuitem">Priority
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="relative overflow-x-hidden overflow-y-auto scrolling-touch scrollbar-w-2 scrollbar-track-gray-lighter scrollbar-thumb-rounded scrollbar-thumb-gray" style="height: 640px;">
+
+
+
+
+                                <ul class="flex flex-col flex-auto inline-block w-full px-2 select-none">
+                                    <li class="flex flex-no-wrap items-center pr-3 text-black rounded-lg cursor-pointer mt-200 py-65 hover:bg-gray-200" style="padding-top: 0.65rem; padding-bottom: 0.65rem">
+                                        <div class="flex justify-between w-full focus:outline-none">
+                                            <div class="flex justify-between w-full">
+                                                <div class="items-center flex-1 min-w-0">
+                                                    <div class="flex justify-between mb-1">
+                                                        <h2 class="text-sm font-semibold text-black">Lauri Edmon</h2>
+                                                        <div class="flex">
+                                                            <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" width="19" height="14" viewBox="0 0 19 14" style="color: transparent">
+                                                                <path fill-rule="nonzero" d="M7.96833846,10.0490996 L14.5108251,2.571972 C14.7472185,2.30180819 15.1578642,2.27443181 15.428028,2.51082515 C15.6711754,2.72357915 15.717665,3.07747757 15.5522007,3.34307913 L15.4891749,3.428028 L8.48917485,11.428028 C8.2663359,11.6827011 7.89144111,11.7199091 7.62486888,11.5309823 L7.54038059,11.4596194 L4.54038059,8.45961941 C4.2865398,8.20577862 4.2865398,7.79422138 4.54038059,7.54038059 C4.7688373,7.31192388 5.12504434,7.28907821 5.37905111,7.47184358 L5.45961941,7.54038059 L7.96833846,10.0490996 L14.5108251,2.571972 L7.96833846,10.0490996 Z"/>
+                                                            </svg>
+                                                            <span class="ml-1 text-xs font-medium text-gray-600">12.52</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex justify-between text-sm leading-none truncate">
+                                                        <span>Complain mcComplainface</span>
+                                                        <span v-else class="flex items-center justify-center w-5 h-5 text-xs text-right text-white bg-green-500 rounded-full">2</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="flex flex-no-wrap items-center pr-3 text-black rounded-lg cursor-pointer mt-200 py-65 hover:bg-gray-200" style="padding-top: 0.65rem; padding-bottom: 0.65rem">
+                                        <div class="flex justify-between w-full focus:outline-none">
+                                            <div class="flex justify-between w-full">
+                                                <div class="items-center flex-1 min-w-0">
+                                                    <div class="flex justify-between mb-1">
+                                                        <h2 class="text-sm font-semibold text-black">Julian Gruber</h2>
+                                                        <div class="flex">
+                                                            <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" width="19" height="14" viewBox="0 0 19 14" style="color: transparent">
+                                                                <path fill-rule="nonzero" d="M7.96833846,10.0490996 L14.5108251,2.571972 C14.7472185,2.30180819 15.1578642,2.27443181 15.428028,2.51082515 C15.6711754,2.72357915 15.717665,3.07747757 15.5522007,3.34307913 L15.4891749,3.428028 L8.48917485,11.428028 C8.2663359,11.6827011 7.89144111,11.7199091 7.62486888,11.5309823 L7.54038059,11.4596194 L4.54038059,8.45961941 C4.2865398,8.20577862 4.2865398,7.79422138 4.54038059,7.54038059 C4.7688373,7.31192388 5.12504434,7.28907821 5.37905111,7.47184358 L5.45961941,7.54038059 L7.96833846,10.0490996 L14.5108251,2.571972 L7.96833846,10.0490996 Z"/>
+                                                            </svg>
+                                                            <span class="ml-1 text-xs font-medium text-gray-600">20.25</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex justify-between text-sm leading-none truncate">
+                                                        <span>Send audio...</span>
+                                                        <span v-else class="flex items-center justify-center w-5 h-5 text-xs text-right text-white bg-green-500 rounded-full">2</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="flex flex-no-wrap items-center pr-3 text-black rounded-lg cursor-pointer mt-200 py-65 hover:bg-gray-200" style="padding-top: 0.65rem; padding-bottom: 0.65rem">
+                                        <div class="flex justify-between w-full focus:outline-none">
+                                            <div class="flex justify-between w-full">
+                                                <div class="items-center flex-1 min-w-0">
+                                                    <div class="flex justify-between mb-1">
+                                                        <h2 class="text-sm font-semibold text-black">Karlien Nihen</h2>
+                                                        <div class="flex">
+                                                            <span class="ml-1 text-xs font-medium text-gray-600">2.28</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex justify-between text-sm leading-none truncate">
+                                                        <span>Writing...</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="flex flex-no-wrap items-center pr-3 text-black rounded-lg cursor-pointer mt-200 py-65 hover:bg-gray-200" style="padding-top: 0.65rem; padding-bottom: 0.65rem">
+                                        <div class="flex justify-between w-full focus:outline-none">
+                                            <div class="flex justify-between w-full">
+                                                <div class="items-center flex-1 min-w-0">
+                                                    <div class="flex justify-between mb-1">
+                                                        <h2 class="text-sm font-semibold text-black">Meg Rigden</h2>
+                                                        <div class="flex">
+                                                            <span class="ml-1 text-xs font-medium text-gray-600">12.52</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex justify-between text-sm leading-none truncate">
+                                                        <span>Washington D.C.</span>
+                                                        <span v-else class="flex items-center justify-center w-5 h-5 text-xs text-right text-white bg-green-500 rounded-full">2</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="flex flex-no-wrap items-center pr-3 text-black rounded-lg cursor-pointer mt-200 py-65 hover:bg-gray-200" style="padding-top: 0.65rem; padding-bottom: 0.65rem">
+
+                                        <div class="flex justify-between w-full focus:outline-none">
+                                            <div class="flex justify-between w-full">
+                                                <div class="items-center flex-1 min-w-0">
+                                                    <div class="flex justify-between mb-1">
+                                                        <h2 class="text-sm font-semibold text-black">Mark Green</h2>
+                                                        <div class="flex">
+                                                            <span class="ml-1 text-xs font-medium text-gray-600">05:41</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex justify-between text-sm leading-none truncate">
+                                                        <span>I do not remember anything</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li><li class="flex flex-no-wrap items-center pr-3 text-black rounded-lg cursor-pointer mt-200 py-65 hover:bg-gray-200" style="padding-top: 0.65rem; padding-bottom: 0.65rem">
+                                        <div class="flex justify-between w-full focus:outline-none">
+                                            <div class="flex justify-between w-full">
+                                                <div class="items-center flex-1 min-w-0">
+                                                    <div class="flex justify-between mb-1">
+                                                        <h2 class="text-sm font-semibold text-black">Mark Green</h2>
+                                                        <div class="flex">
+                                                            <span class="ml-1 text-xs font-medium text-gray-600">05:41</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex justify-between text-sm leading-none truncate">
+                                                        <span>I do not remember anything</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li><li class="flex flex-no-wrap items-center pr-3 text-black rounded-lg cursor-pointer mt-200 py-65 hover:bg-gray-200" style="padding-top: 0.65rem; padding-bottom: 0.65rem">
+                                        <div class="flex justify-between w-full focus:outline-none">
+                                            <div class="flex justify-between w-full">
+                                                <div class="items-center flex-1 min-w-0">
+                                                    <div class="flex justify-between mb-1">
+                                                        <h2 class="text-sm font-semibold text-black">Mark Green</h2>
+                                                        <div class="flex">
+                                                            <span class="ml-1 text-xs font-medium text-gray-600">05:41</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex justify-between text-sm leading-none truncate">
+                                                        <span>I do not remember anything</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li><li class="flex flex-no-wrap items-center pr-3 text-black rounded-lg cursor-pointer mt-200 py-65 hover:bg-gray-200" style="padding-top: 0.65rem; padding-bottom: 0.65rem">
+                                        <div class="flex justify-between w-full focus:outline-none">
+                                            <div class="flex justify-between w-full">
+                                                <div class="items-center flex-1 min-w-0">
+                                                    <div class="flex justify-between mb-1">
+                                                        <h2 class="text-sm font-semibold text-black">Mark Green</h2>
+                                                        <div class="flex">
+                                                            <span class="ml-1 text-xs font-medium text-gray-600">05:41</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex justify-between text-sm leading-none truncate">
+                                                        <span>I do not remember anything</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li><li class="flex flex-no-wrap items-center pr-3 text-black rounded-lg cursor-pointer mt-200 py-65 hover:bg-gray-200" style="padding-top: 0.65rem; padding-bottom: 0.65rem">
+                                        <div class="flex justify-between w-full focus:outline-none">
+                                            <div class="flex justify-between w-full">
+                                                <div class="items-center flex-1 min-w-0">
+                                                    <div class="flex justify-between mb-1">
+                                                        <h2 class="text-sm font-semibold text-black">Mark Green</h2>
+                                                        <div class="flex">
+                                                            <span class="ml-1 text-xs font-medium text-gray-600">05:41</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex justify-between text-sm leading-none truncate">
+                                                        <span>I do not remember anything</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li><li class="flex flex-no-wrap items-center pr-3 text-black rounded-lg cursor-pointer mt-200 py-65 hover:bg-gray-200" style="padding-top: 0.65rem; padding-bottom: 0.65rem">
+                                        <div class="flex justify-between w-full focus:outline-none">
+                                            <div class="flex justify-between w-full">
+                                                <div class="items-center flex-1 min-w-0">
+                                                    <div class="flex justify-between mb-1">
+                                                        <h2 class="text-sm font-semibold text-black">Mark Green</h2>
+                                                        <div class="flex">
+                                                            <span class="ml-1 text-xs font-medium text-gray-600">05:41</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex justify-between text-sm leading-none truncate">
+                                                        <span>I do not remember anything</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li><li class="flex flex-no-wrap items-center pr-3 text-black rounded-lg cursor-pointer mt-200 py-65 hover:bg-gray-200" style="padding-top: 0.65rem; padding-bottom: 0.65rem">
+                                        <div class="flex justify-between w-full focus:outline-none">
+                                            <div class="flex justify-between w-full">
+                                                <div class="items-center flex-1 min-w-0">
+                                                    <div class="flex justify-between mb-1">
+                                                        <h2 class="text-sm font-semibold text-black">Mark Green</h2>
+                                                        <div class="flex">
+                                                            <span class="ml-1 text-xs font-medium text-gray-600">05:41</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex justify-between text-sm leading-none truncate">
+                                                        <span>I do not remember anything</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li><li class="flex flex-no-wrap items-center pr-3 text-black rounded-lg cursor-pointer mt-200 py-65 hover:bg-gray-200" style="padding-top: 0.65rem; padding-bottom: 0.65rem">
+                                        <div class="flex justify-between w-full focus:outline-none">
+                                            <div class="flex justify-between w-full">
+                                                <div class="items-center flex-1 min-w-0">
+                                                    <div class="flex justify-between mb-1">
+                                                        <h2 class="text-sm font-semibold text-black">Mark Green</h2>
+                                                        <div class="flex">
+                                                            <span class="ml-1 text-xs font-medium text-gray-600">05:41</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex justify-between text-sm leading-none truncate">
+                                                        <span>I do not remember anything</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li><li class="flex flex-no-wrap items-center pr-3 text-black rounded-lg cursor-pointer mt-200 py-65 hover:bg-gray-200" style="padding-top: 0.65rem; padding-bottom: 0.65rem">
+                                        <div class="flex justify-between w-full focus:outline-none">
+                                            <div class="flex justify-between w-full">
+                                                <div class="items-center flex-1 min-w-0">
+                                                    <div class="flex justify-between mb-1">
+                                                        <h2 class="text-sm font-semibold text-black">Mark Green</h2>
+                                                        <div class="flex">
+                                                            <span class="ml-1 text-xs font-medium text-gray-600">05:41</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex justify-between text-sm leading-none truncate">
+                                                        <span>I do not remember anything</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li><li class="flex flex-no-wrap items-center pr-3 text-black rounded-lg cursor-pointer mt-200 py-65 hover:bg-gray-200" style="padding-top: 0.65rem; padding-bottom: 0.65rem">
+                                        <div class="flex justify-between w-full focus:outline-none">
+                                            <div class="flex justify-between w-full">
+                                                <div class="items-center flex-1 min-w-0">
+                                                    <div class="flex justify-between mb-1">
+                                                        <h2 class="text-sm font-semibold text-black">Mark Green</h2>
+                                                        <div class="flex">
+                                                            <span class="ml-1 text-xs font-medium text-gray-600">05:41</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex justify-between text-sm leading-none truncate">
+                                                        <span>I do not remember anything</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="relative bg-teal-400 col-span-3">
+                        <div class="relative flex flex-col flex-1">
+
+
+                            <div class="z-20 flex flex-grow-0 flex-shrink-0 items-center w-full p-3 bg-white border-b">
+                                <div class="flex flex-col justify-center flex-1 overflow-hidden cursor-pointer">
+                                    <div class="overflow-hidden text-base font-medium leading-tight text-purple-600 whitespace-no-wrap">Karen</div>
+                                    <div class="overflow-hidden text-sm font-medium leading-tight text-gray-600 whitespace-no-wrap">A-6HDT68</div>
+                                </div>
+                                <div class="relative">
+                                    <span class="inline-block w-full rounded-md shadow-sm">
+                                        <button type="button" aria-haspopup="listbox" aria-expanded="true" aria-labelledby="listbox-label" class="cursor-default relative w-full rounded-md border border-gray-300 bg-white pl-3 pr-10 py-2 text-left focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition ease-in-out duration-150 sm:text-sm sm:leading-5">
+                                            <div class="flex items-center space-x-3">
+                                                <span class="block truncate">
+                                                    Assign to
+                                                </span>
+                                            </div>
+                                            <span class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                                <svg class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="none" stroke="currentColor">
+                                                    <path d="M7 7l3-3 3 3m0 6l-3 3-3-3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                </svg>
+                                            </span>
+                                        </button>
+                                    </span>
+
+                                    <!-- Select popover, show/hide based on select state. -->
+
+                                </div>
+
+                                <button class="flex self-center p-2 text-gray-500 rounded-full focus:outline-none hover:text-gray-600 hover:bg-gray-300">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path class="heroicon-ui" d="M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm-2.3-8.7l1.3 1.29 3.3-3.3a1 1 0 0 1 1.4 1.42l-4 4a1 1 0 0 1-1.4 0l-2-2a1 1 0 0 1 1.4-1.42z"/></svg>
+                                </button>
+                                <button class="flex self-center p-2 text-gray-500 rounded-full focus:outline-none hover:text-gray-600 hover:bg-gray-300">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path class="heroicon-ui" d="M6.1 21.98a1 1 0 0 1-1.45-1.06l1.03-6.03-4.38-4.26a1 1 0 0 1 .56-1.71l6.05-.88 2.7-5.48a1 1 0 0 1 1.8 0l2.7 5.48 6.06.88a1 1 0 0 1 .55 1.7l-4.38 4.27 1.04 6.03a1 1 0 0 1-1.46 1.06l-5.4-2.85-5.42 2.85zm4.95-4.87a1 1 0 0 1 .93 0l4.08 2.15-.78-4.55a1 1 0 0 1 .29-.88l3.3-3.22-4.56-.67a1 1 0 0 1-.76-.54l-2.04-4.14L9.47 9.4a1 1 0 0 1-.75.54l-4.57.67 3.3 3.22a1 1 0 0 1 .3.88l-.79 4.55 4.09-2.15z"/></svg>
+                                </button>
+                                <button class="flex self-center p-2 text-gray-500 rounded-full focus:outline-none hover:text-gray-600 hover:bg-gray-300">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path class="heroicon-ui" d="M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm1-8.41l2.54 2.53a1 1 0 0 1-1.42 1.42L11.3 12.7A1 1 0 0 1 11 12V8a1 1 0 0 1 2 0v3.59z"/></svg>
+                                </button>
+                                <button type="button" class="flex self-center hidden p-2 text-gray-500 rounded-full md:block focus:outline-none hover:text-gray-600 hover:bg-gray-300">
+                                    <svg class="w-6 h-6 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                        <path fill-rule="nonzero" d="M12,16 C13.1045695,16 14,16.8954305 14,18 C14,19.1045695 13.1045695,20 12,20 C10.8954305,20 10,19.1045695 10,18 C10,16.8954305 10.8954305,16 12,16 Z M12,10 C13.1045695,10 14,10.8954305 14,12 C14,13.1045695 13.1045695,14 12,14 C10.8954305,14 10,13.1045695 10,12 C10,10.8954305 10.8954305,10 12,10 Z M12,4 C13.1045695,4 14,4.8954305 14,6 C14,7.1045695 13.1045695,8 12,8 C10.8954305,8 10,7.1045695 10,6 C10,4.8954305 10.8954305,4 12,4 Z"/>
+                                    </svg>
+                                </button>
+                                <button class="flex self-center p-2 text-gray-700 rounded-full md:hidden focus:outline-none hover:text-gray-600 hover:bg-gray-200">
+                                    <svg class="w-6 h-6 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                        <path fill-rule="nonzero" d="M4,16 L20,16 C20.5522847,16 21,16.4477153 21,17 C21,17.5128358 20.6139598,17.9355072 20.1166211,17.9932723 L20,18 L4,18 C3.44771525,18 3,17.5522847 3,17 C3,16.4871642 3.38604019,16.0644928 3.88337887,16.0067277 L4,16 L20,16 L4,16 Z M4,11 L20,11 C20.5522847,11 21,11.4477153 21,12 C21,12.5128358 20.6139598,12.9355072 20.1166211,12.9932723 L20,13 L4,13 C3.44771525,13 3,12.5522847 3,12 C3,11.4871642 3.38604019,11.0644928 3.88337887,11.0067277 L4,11 Z M4,6 L20,6 C20.5522847,6 21,6.44771525 21,7 C21,7.51283584 20.6139598,7.93550716 20.1166211,7.99327227 L20,8 L4,8 C3.44771525,8 3,7.55228475 3,7 C3,6.48716416 3.38604019,6.06449284 3.88337887,6.00672773 L4,6 Z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="top-0 bottom-0 left-0 right-0 flex flex-col flex-1 overflow-hidden bg-transparent bg-bottom bg-cover">
+                                <div class="self-center flex-1 w-full">
+                                    <div class="flex flex-col px-3 py-1 m-auto overflow-auto" style="height: 520px" id="scrollArea">
+                                        <div class="absolute z-50 bottom-0 right-0 mb-3 mr-3 p-2 border-gray-100 border-2 rounded-full bg-white transform transition duration-200">
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path class="heroicon-ui" d="M11 18.59V3a1 1 0 0 1 2 0v15.59l5.3-5.3a1 1 0 0 1 1.4 1.42l-7 7a1 1 0 0 1-1.4 0l-7-7a1 1 0 0 1 1.4-1.42l5.3 5.3z"/></svg>
+                                        </div>
+                                        <div class="self-end w-3/4 my-2">
+                                            <div class="relative p-2 text-sm bg-white rounded-md text-xs shadow">
+
+                                                <div class="flex flex-row items-center hover:text-purple-500 cursor-pointer">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22"><path class="heroicon-ui" d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6c0-1.1.9-2 2-2zm16 3.38V6H4v1.38l8 4 8-4zm0 2.24l-7.55 3.77a1 1 0 0 1-.9 0L4 9.62V18h16V9.62z"/></svg>
+                                                    <span class="font-bold ml-2">Welcome email</span>
+                                                </div>
+                                                <span class="absolute bottom-0 right-0  mr-1 mb-1 text-xs font-medium text-gray-600">12.52</span>
+                                            </div>
+                                        </div>
+                                        <div class="self-start w-3/4 my-2">
+                                            <div class="relative p-4 pb-6 text-sm bg-white rounded-t-lg rounded-r-lg shadow">
+                                                Here's my meter readings
+
+                                                <small class="absolute bottom-0 left-0 ml-4 mb-1 text-gray-600">Sent from karen@email.com</small>
+                                                <span class="absolute bottom-0 right-0  mr-1 mb-1 text-xs font-medium text-gray-600">12.52</span>
+                                            </div>
+                                        </div>
+                                        <div class="self-start w-3/4 my-2">
+                                            <div class="relative p-4 pb-6 text-sm bg-white rounded-t-lg rounded-r-lg shadow">
+                                                Here's my meter another readings
+                                                <small class="absolute bottom-0 left-0 ml-4 mb-1 text-gray-600">Sent from karen@email.com</small>
+                                                <span class="absolute bottom-0 right-0  mr-1 mb-1 text-xs font-medium text-gray-600">12.54</span>
+                                            </div>
+                                        </div>
+                                        <div class="flex flex-row items-center self-center px-2 py-1 mx-0 my-1 text-sm text-white text-gray-700 bg-white border border-gray-200 rounded-full shadow rounded-tg">
+
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" class="fill-current"><path class="heroicon-ui" d="M13.04 14.69l1.07-2.14a1 1 0 0 1 1.2-.5l6 2A1 1 0 0 1 22 15v5a2 2 0 0 1-2 2h-2A16 16 0 0 1 2 6V4c0-1.1.9-2 2-2h5a1 1 0 0 1 .95.68l2 6a1 1 0 0 1-.5 1.21L9.3 10.96a10.05 10.05 0 0 0 3.73 3.73zM8.28 4H4v2a14 14 0 0 0 14 14h2v-4.28l-4.5-1.5-1.12 2.26a1 1 0 0 1-1.3.46 12.04 12.04 0 0 1-6.02-6.01 1 1 0 0 1 .46-1.3l2.26-1.14L8.28 4zm12.01-1.7a1 1 0 0 1 1.42 1.4L17.4 8H20a1 1 0 0 1 0 2h-5a1 1 0 0 1-1-1V4a1 1 0 0 1 2 0v2.59l4.3-4.3z"/></svg>
+                                            <span class="ml-1">Call received from +447535618782</span><span class="ml-2 text-xs font-medium text-gray-600 align-self-end">12.52</span>
+                                        </div>
+                                    
+                                        <div class="self-start text-xs">May 6</div>
+                                        <div class="self-start w-3/4 my-2">
+                                            <div class="relative p-4 text-sm bg-white rounded-t-lg rounded-r-lg shadow">
+                                                Don't forget to check on all responsive sizes.
+                                                <span class="absolute bottom-0 right-0  mr-1 mb-1 text-xs font-medium text-gray-600">9.45</span>
+                                            </div>
+                                        </div>
+                                        <div class="self-end w-3/4 my-2">
+                                            <div class="relative p-4 text-sm bg-white rounded-t-lg rounded-l-lg shadow">
+                                                Use the buttons above the editor to test on them
+                                                <span class="absolute bottom-0 right-0  mr-1 mb-1 text-xs font-medium text-gray-600">12.54</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="self-start w-3/4 my-2">
+                                            <div class="relative p-4 text-sm bg-yellow-300 rounded-t-lg rounded-r-lg shadow">
+                                                <p>
+                                                    Send email after flow received
+                                                </p>
+                                                <small>Noted by Nadim</small>
+                                                <span class="absolute bottom-0 right-0  mr-1 mb-1 text-xs font-medium text-gray-600">11.01</span>
+                                            </div>
+                                        </div>
+                                        <div class="flex flex-row items-center self-center px-2 py-1 mx-0 my-1 text-sm text-white text-gray-700 bg-yellow-300 border border-yellow-400 rounded-full shadow rounded-tg">
+
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" class="fill-current">
+                                                <path class="heroicon-ui" d="M12 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-2a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm9 11a1 1 0 0 1-2 0v-2a3 3 0 0 0-3-3H8a3 3 0 0 0-3 3v2a1 1 0 0 1-2 0v-2a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v2z"/>
+                                                <span class="ml-1">Assigned to you by Nadim</span>
+
+                                                <span class="ml-2 text-xs font-medium text-gray-600">12.54</span>
+                                        </div>
+                                        <div class="flex flex-row items-center self-center px-2 py-1 mx-0 my-1 text-sm text-white text-gray-700 bg-white border border-gray-200 rounded-full shadow rounded-tg">
+
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" class="fill-current"><path class="heroicon-ui" d="M13.04 14.69l1.07-2.14a1 1 0 0 1 1.2-.5l6 2A1 1 0 0 1 22 15v5a2 2 0 0 1-2 2h-2A16 16 0 0 1 2 6V4c0-1.1.9-2 2-2h5a1 1 0 0 1 .95.68l2 6a1 1 0 0 1-.5 1.21L9.3 10.96a10.05 10.05 0 0 0 3.73 3.73zM8.28 4H4v2a14 14 0 0 0 14 14h2v-4.28l-4.5-1.5-1.12 2.26a1 1 0 0 1-1.3.46 12.04 12.04 0 0 1-6.02-6.01 1 1 0 0 1 .46-1.3l2.26-1.14L8.28 4zm7.43 5.7a1 1 0 1 1-1.42-1.4L18.6 4H16a1 1 0 0 1 0-2h5a1 1 0 0 1 1 1v5a1 1 0 0 1-2 0V5.41l-4.3 4.3z"/></svg>
+                                            <span class="ml-1">Call made to +447535618782</span>
+
+                                            <span class="ml-2 text-xs font-medium text-gray-600">19.24</span>
+                                        </div>
+                                        <div class="self-center px-2 py-1 mx-0 my-1 text-sm text-white text-gray-700 bg-gray-300 border border-gray-300 rounded-full shadow rounded-tg">May 9</div>
+                                       <div class="self-end w-3/4 my-2">
+                                        <div class="relative p-4 text-sm bg-yellow-300 rounded-t-lg rounded-l-lg shadow">
+                                            Still waiting for flow
+                                            <span class="absolute bottom-0 right-0  mr-1 mb-1 text-xs font-medium text-gray-600">11.01</span>
+                                        </div>
+                                    </div> <div class="self-center px-2 py-1 mx-0 my-2 text-sm text-white text-gray-700 bg-white border border-gray-200 rounded-full shadow rounded-tg">Agreement was renewed
+                                            <span class="ml-2 text-xs font-medium text-gray-600">22.14</span>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="absolute bottom-0 w-full">
+                            <div class="flex items-center justify-center px-4 py-3 mx-auto shadow-lg">
+                                <form class="w-full px-4 pt-2 bg-white rounded-md">
+                                    <div class="flex flex-wrap mb-6 -mx-3">
+                                        <div>
+                                            <ul class="flex flex-row items-center inline-block px-2 list-none select-none">
+                                                <li class="flex-auto px-1 mx-1 -mb-px text-center rounded-t-lg cursor-pointer last:mr-0 hover:bg-gray-200">
+                                                    <a class="flex items-center justify-center block py-2 text-xs font-semibold leading-normal tracking-wide border-b-2 border-blue-500">
+                                                        Reply
+                                                    </a>
+                                                </li>
+                                                <li class="flex-auto px-1 mx-1 -mb-px text-center rounded-t-lg cursor-pointer last:mr-0 hover:bg-gray-200">
+                                                    <a class="flex items-center justify-center block py-2 text-xs font-semibold leading-normal tracking-wide border-b-2 border-transparent">
+                                                        Note
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="w-full px-3 mt-2 mb-2 md:w-full">
+                                            <textarea class="w-full h-20 px-3 py-2 font-medium leading-normal placeholder-gray-700 bg-gray-100 border border-gray-400 rounded resize-none focus:outline-none focus:bg-white" name="body" placeholder='Type Your Comment' required></textarea>
+                                        </div>
+                                        <div class="flex items-end w-full px-3 md:w-full">
+                                            <div class="-mr-1">
+                                                <input type='submit' class="px-4 py-1 mr-1 font-medium tracking-wide text-gray-700 bg-white border border-gray-400 rounded-lg hover:bg-gray-100" value='Send'>
+                                            </div>
+                                        </div>
+                                </form>
+                                    </div>
+                            </div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script>
+        (() => {
+            document.querySelector('[data-dropdown-button]').addEventListener("mouseup", (event) => {
+                event.target.closest('[data-dropdown]').querySelector('[data-dropdown-list]').classList.add("block")
+                event.target.closest('[data-dropdown]').querySelector('[data-dropdown-list]').classList.remove("hidden")
+            })
+            // Set things up
+            window.addEventListener("load", (event) => {
+                const root = document.querySelector('#scrollArea > *:last-child')
+                console.log('root: ', root)
+                let options = {
+                    root,
+                    rootMargin: '400px',
+                    threshold: 1.0
+                }
+
+                const intersectionCallback = (entries) => {
+                    entries.forEach(entry => {
+                        console.log('entry: ', entry)
+                        if (entry.intersectionRatio == 0) {
+                        document.querySelector('#scrollArea > *:first-child').classList.remove('scale-0')
+                        document.querySelector('#scrollArea > *:first-child').classList.add('scale-100')
+                        } else {
+                            document.querySelector('#scrollArea > *:first-child').classList.remove('scale-100')
+                            document.querySelector('#scrollArea > *:first-child').classList.add('scale-0')
+                        }
+                    });
+                }
+                let observer = new IntersectionObserver(intersectionCallback);
+                observer.observe(root)
+            }, false);
+
+        })()
+    </script>
+</html>
